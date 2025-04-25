@@ -32,7 +32,7 @@ There are a few differences between the `eval_model` function and the original `
 
 
 ```
-python multiblimp/scripts/lm_eval/eval_model.py 
+python scripts/lm_eval/eval_model.py 
         --model catherinearnett/B-GPT_en_nl_simultaneous #model name on huggingface
         --revision 10000 # #model checkpoint
         --data_dir hf_cache/eng/ # directory where you downloadded the dataset for the language you're evaluating on
