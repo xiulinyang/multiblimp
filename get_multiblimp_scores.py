@@ -1,4 +1,3 @@
-# from multiblimp.scripts.lm_eval import eval_model
 from huggingface_hub import hf_hub_download
 from huggingface_hub import HfApi
 import matplotlib.pyplot as plt
@@ -20,14 +19,15 @@ total_downloads = 0
 all_bgts = []
 
 for model in tqdm(all_models):
-    model_info = api.model_info(model.modelId, expand=["downloadsAllTime"])  # Corrected call
+    model_info = api.model_info(model.modelId, expand=["downloadsAllTime"])  
     model_name = str(model.modelId)
     all_bgts.append(model_name)
 
-# Initialize the results DataFrame and save it to a CSV
+# create results dataframe
 results = pd.DataFrame(columns=['model', 'checkpoint','l1', 'l2', 'biling_cond', 'l1_acc', 'l2_acc'])
 results.to_csv('bgpt_multiblimp_results.csv', mode='w', index=False)
 
+# mapping for language codes used for model to language codes used for multiblimp
 language_map = {
     'en': 'eng',
     'nl': 'nld',
@@ -36,7 +36,7 @@ language_map = {
     'pl': 'pol'
 }
 
-# Loop through all models
+# loop through all B-GPT models
 for m in all_bgts:
     if 'B-GPT' in m:
         # print(m)
@@ -48,10 +48,8 @@ for m in all_bgts:
         l1_iso = language_map[l1]
         l2_iso = language_map[l2]
         
-        # Loop through each checkpoint
+        # loop through checkpoints
         for c in checkpoints:
-            # print(c)
-            # Ensure all variables are strings
             m_str = str(m)
             c_str = str(c)
             l1_iso_str = str(l1_iso)
