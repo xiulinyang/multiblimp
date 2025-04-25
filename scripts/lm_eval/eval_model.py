@@ -51,13 +51,13 @@ lm = load_hf_model(
 
 pair_files = glob(os.path.join(args.data_dir, "**/*.tsv"), recursive=True)
 if not pair_files:
-    print(f"⚠️ No .tsv files found in: {args.data_dir}")
+    print(f"No .tsv files found in: {args.data_dir}")
     sys.exit(1)
 
 for fn in sorted(pair_files):
     path_parts = fn.split(os.sep)
     if len(path_parts) < 3:
-        print(f"⚠️ Skipping malformed path: {fn}")
+        print(f"Skipping malformed path: {fn}")
         continue
 
     phenomenon, lang, condition = path_parts[-3:]
@@ -67,7 +67,7 @@ for fn in sorted(pair_files):
 
     df = score_tse(lm, fn=fn)
     if df is None or df.empty:
-        print(f"⚠️ No data returned for: {fn}")
+        print(f"No data returned for: {fn}")
         continue
 
     print(f"{phenomenon} | {lang} | {condition_name} → Score: {(df.sen_nll < df.wrong_nll).mean():.3f}")
@@ -78,4 +78,4 @@ for fn in sorted(pair_files):
     # Generate output filename with only one .tsv extension
     score_fn = os.path.join(results_dir, f"{phenomenon}_{lang}_{condition_name}.tsv")
     df.to_csv(score_fn, sep='\t')
-    print(f"✅ Saved: {score_fn}")
+    print(f"Saved: {score_fn}")
