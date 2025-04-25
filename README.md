@@ -1,6 +1,6 @@
 # MultiBLiMP
 
-This is my modified implementation of Jumelet et al. (2025) MultiBLiMP 1.0. Any bugs or errors are my own. 
+This is my modified implementation of [Jumelet et al. (2025) MultiBLiMP 1.0](https://arxiv.org/abs/2504.02768). Any bugs or errors are my own. 
 
 The updates include:
 * documentation on how to integrate the Hugging Face datasets into the pipeline
@@ -28,7 +28,7 @@ for l in ['eng', 'nld', 'spa', 'ell', 'pol']:
 
 ## Using MultiBLiMP
 
-There are a few differences between the `eval_model` function and the original `lm_eval` from the [LM Evaluation Harness](https://github.com/EleutherAI/lm-evaluation-harness). Instead of `model_args`, there is a `model` argument. This can be a model on Hugging Face. I added a `--revision` flag, which allows you to add model step. Make sure to note the naming convention for the revisions for your model. For example, the Pythia models have their steps labelled as `step1000`, `step10000`, etc.
+There are a few differences between the `eval_model` function and the original `lm_eval` from the [LM Evaluation Harness](https://github.com/EleutherAI/lm-evaluation-harness). Instead of `model_args`, there is a `model` argument. This should be a model on Hugging Face¹. I added a `--revision` flag, which allows you to add model step. Make sure to note the naming convention for the revisions for your model. For example, the Pythia models have their steps labelled as `step1000`, `step10000`, etc.
 
 
 ```
@@ -44,6 +44,9 @@ python multiblimp/scripts/lm_eval/eval_model.py
 
 I have uploaded a script, `get_multiblimp_scores.py`, which provides an example of how to loop over multiple models, checkpoints, and languages. 
 
+### Notes
+
+¹ In order to run local models, you will need to adapt the `load_hf_model` function (or create a new function) in `src/lm_eval/load_model.py`.
 
 ## Citation
 
