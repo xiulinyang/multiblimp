@@ -48,15 +48,15 @@ def load_hf_model(model_name: str, no_cache=False, revision_step="main", **kwarg
                 **kwargs
             )
     except OSError as e:
-        print(f"❌ Failed to load model '{model_name}' @ revision '{revision_step}'")
-        print(f"🚨 Error: {e}")
+        print(f"Failed to load model '{model_name}' @ revision '{revision_step}'")
+        print(f"Error: {e}")
         return None
 
     if model is None or tokenizer is None:
-        print(f"⚠️ Model or tokenizer not loaded properly for: {model_name}")
+        print(f"Model or tokenizer not loaded properly for: {model_name}")
         return None
 
-    print(f"✅ Successfully loaded model '{model_name}' @ revision '{revision_step}'")
+    print(f"Successfully loaded model '{model_name}' @ revision '{revision_step}'")
 
     # Updated to support MPS on Mac
     device = 'cpu'
