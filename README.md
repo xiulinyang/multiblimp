@@ -19,7 +19,7 @@ cd multiblimp
 
 ### Download Datasets
 
-For all the languages you plan to evaluate, download them in to the `hf_cache` directory inside `multiblimp/`. In this example, I download English, Dutch, Spanish, Greek, and Polish. Use the [ISO 639-3](https://en.wikipedia.org/wiki/ISO_639-3) code. 
+For all the languages you plan to evaluate, download them in to a directory inside `multiblimp/`, called `hf_cache`. In this example, I download English, Dutch, Spanish, Greek, and Polish. Use the [ISO 639-3](https://en.wikipedia.org/wiki/ISO_639-3) code. 
 
 ```
 for l in ['eng', 'nld', 'spa', 'ell', 'pol']:
