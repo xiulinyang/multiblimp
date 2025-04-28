@@ -61,7 +61,7 @@ for m in all_bgts:
                 ], check=True, env={**os.environ})
 
                 # Collect results for L1
-                l1_results_path = f"multiblimp_results/{lang}_{vocab_size}-{c_str}/hf_cache_{lang_data_id}_data.tsv"
+                l1_results_path = f"multiblimp/multiblimp_results/{lang}_{vocab_size}-{c_str}/hf_cache_{lang_data_id}_data.tsv"
                 df = pd.read_csv(l1_results_path, sep='\t')
                 total_samples = len(df)
                 correct_predictions = len(df[df['delta'] > 0])
