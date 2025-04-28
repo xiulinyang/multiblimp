@@ -74,18 +74,13 @@ for m in all_bgts:
                     'acc': [l1_accuracy],
 
                 })
-                new_line.to_csv('bgpt_multiblimp_results.csv', mode='a', header=False, index=False)
+                new_line.to_csv('multiblimp_results.csv', mode='a', header=False, index=False)
                 print(new_line)
                 
-            #except subprocess.CalledProcessError as e:
-            #    print(f"Error processing model {m_str} at checkpoint {c_str}:")
-            #    print(f"Command failed with exit code {e.returncode}")
-            #    print(f"Error details: {e}")
-            #    
-            #    # Continue with next checkpoint instead of stopping the entire script
-            #    continue
-            except KeyError as e:
+            except subprocess.CalledProcessError as e:
+                print(f"Error processing model {m_str} at checkpoint {c_str}:")
+                print(f"Command failed with exit code {e.returncode}")
+                print(f"Error details: {e}")
+                
+                # Continue with next checkpoint instead of stopping the entire script
                 continue
-           #     print(f"Unexpected error with model {m_str} at checkpoint {c_str}:")
-           #     print(f"Error: {e}")
-            #    continue
