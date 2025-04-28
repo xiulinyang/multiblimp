@@ -54,14 +54,14 @@ for m in all_bgts:
                     "python", "multiblimp/scripts/lm_eval/eval_model.py",
                     "--model_name", m_str,
                     "--revision",f'checkpoint-{c_str}',
-                    "--data_dir", f"hf_cache/{lang_data_id}/",
+                    "--data_dir", f"multiblimp/hf_cache/{lang_data_id}/",
                     "--src_dir", "multiblimp",
-                    "--results_dir", f"multiblimp_results/{lang}_{vocab_size}-{c_str}",
-                    "--cache_dir", "hf_cache/"
+                    "--results_dir", f"multiblimp/multiblimp_results/{lang}_{vocab_size}-{c_str}",
+                    "--cache_dir", "multiblimp/hf_cache/"
                 ], check=True, env={**os.environ})
 
                 # Collect results for L1
-                l1_results_path = f"multiblimp_results/{lang}_{vocab_size}-{c_str}/{lang}_{vocab_size}-{c_str}_data.tsv"
+                l1_results_path = f"multiblimp/multiblimp_results/{lang}_{vocab_size}-{c_str}/hf_cache_{lang_data_id}_data.tsv"
                 df = pd.read_csv(l1_results_path, sep='\t')
                 total_samples = len(df)
                 correct_predictions = len(df[df['delta'] > 0])
@@ -77,14 +77,15 @@ for m in all_bgts:
                 new_line.to_csv('bgpt_multiblimp_results.csv', mode='a', header=False, index=False)
                 print(new_line)
                 
-            except subprocess.CalledProcessError as e:
-                print(f"Error processing model {m_str} at checkpoint {c_str}:")
-                print(f"Command failed with exit code {e.returncode}")
-                print(f"Error details: {e}")
-                
-                # Continue with next checkpoint instead of stopping the entire script
+            #except subprocess.CalledProcessError as e:
+            #    print(f"Error processing model {m_str} at checkpoint {c_str}:")
+            #    print(f"Command failed with exit code {e.returncode}")
+            #    print(f"Error details: {e}")
+            #    
+            #    # Continue with next checkpoint instead of stopping the entire script
+            #    continue
+            except KeyError as e:
                 continue
-            except Exception as e:
-                print(f"Unexpected error with model {m_str} at checkpoint {c_str}:")
-                print(f"Error: {e}")
-                continue
+           #     print(f"Unexpected error with model {m_str} at checkpoint {c_str}:")
+           #     print(f"Error: {e}")
+            #    continue
