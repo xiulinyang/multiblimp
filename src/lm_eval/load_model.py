@@ -13,7 +13,7 @@ SCRIPTS = [
 SIZES = ["5mb", "10mb", "100mb", "1000mb"]
 
 
-def load_hf_model(model_name: str, no_cache=False, revision_step="main", **kwargs):
+def load_hf_model(model_name: str, no_cache=False, revision_step="main", tokenizer_revision_step="main",**kwargs):
     """
     Load a HuggingFace model and tokenizer, optionally using a cache and a specific revision.
     No need for token if the model is public.
@@ -33,7 +33,7 @@ def load_hf_model(model_name: str, no_cache=False, revision_step="main", **kwarg
                 tokenizer = AutoTokenizer.from_pretrained(
                     model_name,
                     cache_dir=tmpdirname,
-                    revision=revision_step,
+                    revision=tokenizer_revision_step,
                     **kwargs
                 )
         else:
@@ -44,7 +44,7 @@ def load_hf_model(model_name: str, no_cache=False, revision_step="main", **kwarg
             )
             tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
-                revision=revision_step,
+                revision=tokenizer_revision_step,
                 **kwargs
             )
     except OSError as e:

@@ -38,7 +38,7 @@ language_map = {
 
 # loop through all B-GPT models
 for m in all_bgts:
-    if 'GPT-' in m:
+    if 'GPT-' in m and 'k' in m:
         parts = m.split('-')
         lang = parts[1]
         vocab_size = parts[2]
@@ -53,14 +53,14 @@ for m in all_bgts:
                     "python", "multiblimp/scripts/lm_eval/eval_model.py",
                     "--model_name", m_str,
                     "--revision", c_str,
-                    "--data_dir", f"hf_cache/{lang_data_id}/",
+                    "--data_dir", f"multiblimp/hf_cache/{lang_data_id}/",
                     "--src_dir", "multiblimp",
-                    "--results_dir", f"multiblimp_results/{lang}_{vocab_size}-{c_str}",
-                    "--cache_dir", "hf_cache/"
+                    "--results_dir", f"multiblimp/multiblimp_results/{lang}_{vocab_size}-{c_str}",
+                    "--cache_dir", "multiblimp/hf_cache/"
                 ], check=True, env={**os.environ})
 
                 # Collect results for L1
-                l1_results_path = f"multiblimp_results/{lang}_{vocab_size}-{c_str}/{lang}_{vocab_size}-{c_str}_data.tsv"
+                l1_results_path = f"multiblimp_results/{lang}_{vocab_size}-{c_str}/hf_cache_{lang_data_id}_data.tsv"
                 df = pd.read_csv(l1_results_path, sep='\t')
                 total_samples = len(df)
                 correct_predictions = len(df[df['delta'] > 0])
