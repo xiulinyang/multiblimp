@@ -22,7 +22,7 @@ for model in tqdm(all_models):
     model_info = api.model_info(model.modelId, expand=["downloadsAllTime"])  
     model_name = str(model.modelId)
     all_bgts.append(model_name)
-
+print(all_bgts)
 # create results dataframe
 results = pd.DataFrame(columns=['model', 'checkpoint','acc'])
 results.to_csv('multiblimp_results.csv', mode='w', index=False)
@@ -41,6 +41,7 @@ for m in all_bgts:
     if 'GPT-' in m and 'k' in m:
         parts = m.split('-')
         lang = parts[1]
+        print(parts)
         vocab_size = parts[2]
         lang_data_id = language_map[lang]
         # loop through checkpoints
@@ -52,8 +53,8 @@ for m in all_bgts:
                 subprocess.run([
                     "python", "multiblimp/scripts/lm_eval/eval_model.py",
                     "--model_name", m_str,
-                    "--revision", c_str,
                     "--data_dir", f"multiblimp/hf_cache/{lang_data_id}/",
+                    "--revision",f'checkpoint-{c_str}',
                     "--src_dir", "multiblimp",
                     "--results_dir", f"multiblimp/multiblimp_results/{lang}_{vocab_size}-{c_str}",
                     "--cache_dir", "multiblimp/hf_cache/"
