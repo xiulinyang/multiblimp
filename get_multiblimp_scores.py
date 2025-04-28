@@ -53,8 +53,8 @@ for m in all_bgts:
                 subprocess.run([
                     "python", "multiblimp/scripts/lm_eval/eval_model.py",
                     "--model_name", m_str,
-                    "--revision",f'checkpoint-{c_str}',
                     "--data_dir", f"multiblimp/hf_cache/{lang_data_id}/",
+                    "--revision",f'checkpoint-{c_str}',
                     "--src_dir", "multiblimp",
                     "--results_dir", f"multiblimp/multiblimp_results/{lang}_{vocab_size}-{c_str}",
                     "--cache_dir", "multiblimp/hf_cache/"
