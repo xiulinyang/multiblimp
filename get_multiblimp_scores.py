@@ -11,7 +11,7 @@ import torch
 # Set the MKL threading layer to GNU to avoid conflicts
 os.environ['MKL_THREADING_LAYER'] = 'GNU'
 
-checkpoints = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200]
+checkpoints = list(range(200, 3000 + 1, 100))
 
 api = HfApi()
 all_models = api.list_models(author="xiulinyang")
@@ -25,7 +25,7 @@ for model in tqdm(all_models):
 print(all_bgts)
 # create results dataframe
 results = pd.DataFrame(columns=['model', 'checkpoint','acc'])
-results.to_csv('multiblimp_results.csv', mode='w', index=False)
+results.to_csv('multiblimp/multiblimp_results_3000.csv', mode='w', index=False)
 
 # mapping for language codes used for model to language codes used for multiblimp
 language_map = {
