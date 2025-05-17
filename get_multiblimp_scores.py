@@ -26,13 +26,8 @@ for model in tqdm(all_models):
 all_bgts = sorted(all_bgts)
 print(all_bgts)
 # create results dataframe
-<<<<<<< HEAD
-#results = pd.DataFrame(columns=['model', 'checkpoint','acc'])
-#results.to_csv('multiblimp/multiblimp_results_ctc.csv', mode='w', index=False)
-=======
 results = pd.DataFrame(columns=['model', 'checkpoint','acc'])
 results.to_csv('multiblimp/multiblimp_results_epoch.csv', mode='w', index=False)
->>>>>>> 443a04eb7891ba9235dec2d7da1343d095c0beeb
 
 # mapping for language codes used for model to language codes used for multiblimp
 language_map = {
