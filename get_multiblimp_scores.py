@@ -11,7 +11,7 @@ import torch
 # Set the MKL threading layer to GNU to avoid conflicts
 os.environ['MKL_THREADING_LAYER'] = 'GNU'
 
-checkpoints = list(range(200, 3000 + 1, 100))
+checkpoints = list(range(1, 11))
 
 api = HfApi()
 all_models = api.list_models(author="xiulinyang")
@@ -25,7 +25,7 @@ for model in tqdm(all_models):
 print(all_bgts)
 # create results dataframe
 results = pd.DataFrame(columns=['model', 'checkpoint','acc'])
-results.to_csv('multiblimp/multiblimp_results_3000.csv', mode='w', index=False)
+results.to_csv('multiblimp/multiblimp_results_epoch.csv', mode='w', index=False)
 
 # mapping for language codes used for model to language codes used for multiblimp
 language_map = {
@@ -38,7 +38,7 @@ language_map = {
 
 # loop through all B-GPT models
 for m in all_bgts:
-    if 'GPT2-' in m and 'k' in m:
+    if 'GPT2-' in m and '000' in m:
         parts = m.split('-')
         lang = parts[1]
         print(parts)
@@ -54,14 +54,14 @@ for m in all_bgts:
                     "python", "multiblimp/scripts/lm_eval/eval_model.py",
                     "--model_name", m_str,
                     "--data_dir", f"multiblimp/hf_cache/{lang_data_id}/",
-                    "--revision",f'checkpoint-{c_str}',
+                    "--revision",f'epoch-{c_str}',
                     "--src_dir", "multiblimp",
-                    "--results_dir", f"multiblimp/multiblimp_results_3000/{lang}_{vocab_size}-{c_str}",
+                    "--results_dir", f"multiblimp/multiblimp_results_epoch/{lang}_{vocab_size}-{c_str}",
                     "--cache_dir", "multiblimp/hf_cache/"
                 ], check=True, env={**os.environ})
 
                 # Collect results for L1
-                l1_results_path = f"multiblimp/multiblimp_results_3000/{lang}_{vocab_size}-{c_str}/hf_cache_{lang_data_id}_data.tsv"
+                l1_results_path = f"multiblimp/multiblimp_results_epoch/{lang}_{vocab_size}-{c_str}/hf_cache_{lang_data_id}_data.tsv"
                 df = pd.read_csv(l1_results_path, sep='\t')
                 total_samples = len(df)
                 correct_predictions = len(df[df['delta'] > 0])
@@ -74,7 +74,7 @@ for m in all_bgts:
                     'acc': [l1_accuracy],
 
                 })
-                new_line.to_csv('multiblimp/multiblimp_results_3000.csv', mode='a', header=False, index=False)
+                new_line.to_csv('multiblimp/multiblimp_results_epoch.csv', mode='a', header=False, index=False)
                 print(new_line)
                 
             except subprocess.CalledProcessError as e:
