@@ -43,7 +43,7 @@ language_map = {
 
 # loop through all B-GPT models
 for m in all_bgts:
-    parts = m.split('-')
+    parts = m.split('_')
     lang = parts[1]
     print(parts)
     vocab_size = parts[2]
