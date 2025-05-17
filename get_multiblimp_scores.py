@@ -20,7 +20,7 @@ all_bgts = []
 languages = ['EN', 'RU', 'TR', 'DE', 'AR']
 for l in languages:
     for vocab in ['5000', '10000', '20000', '30000', '50000']:
-        all_bgts.append(f'GPT2_{l}_{vocab}')
+        all_bgts.append(f'xiulinyang/GPT2_{l}_{vocab}')
 # for model in tqdm(all_models):
 #     model_info = api.model_info(model.modelId, expand=["downloadsAllTime"])
 #     model_name = str(model.modelId)
