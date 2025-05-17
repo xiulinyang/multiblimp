@@ -11,7 +11,7 @@ import torch
 # Set the MKL threading layer to GNU to avoid conflicts
 os.environ['MKL_THREADING_LAYER'] = 'GNU'
 
-checkpoints = list(range(0, 10000 + 1, 200))
+checkpoints = list(range(1, 11))
 
 api = HfApi()
 all_models = api.list_models(author="xiulinyang")
@@ -26,8 +26,13 @@ for model in tqdm(all_models):
 all_bgts = sorted(all_bgts)
 print(all_bgts)
 # create results dataframe
+<<<<<<< HEAD
 #results = pd.DataFrame(columns=['model', 'checkpoint','acc'])
 #results.to_csv('multiblimp/multiblimp_results_ctc.csv', mode='w', index=False)
+=======
+results = pd.DataFrame(columns=['model', 'checkpoint','acc'])
+results.to_csv('multiblimp/multiblimp_results_epoch.csv', mode='w', index=False)
+>>>>>>> 443a04eb7891ba9235dec2d7da1343d095c0beeb
 
 # mapping for language codes used for model to language codes used for multiblimp
 language_map = {
@@ -40,7 +45,7 @@ language_map = {
 
 # loop through all B-GPT models
 for m in all_bgts:
-    if 'MnGPT2' in m and '13842' in m:
+    if 'GPT2-' in m and '000' in m:
         parts = m.split('-')
         lang = parts[1]
         print(parts)
@@ -56,14 +61,14 @@ for m in all_bgts:
                     "python", "multiblimp/scripts/lm_eval/eval_model.py",
                     "--model_name", m_str,
                     "--data_dir", f"multiblimp/hf_cache/{lang_data_id}/",
-                    "--revision",f'checkpoint-{c_str}',
+                    "--revision",f'epoch-{c_str}',
                     "--src_dir", "multiblimp",
-                    "--results_dir", f"multiblimp/multiblimp_results_10000/{lang}_{vocab_size}-{c_str}",
+                    "--results_dir", f"multiblimp/multiblimp_results_epoch/{lang}_{vocab_size}-{c_str}",
                     "--cache_dir", "multiblimp/hf_cache/"
                 ], check=True, env={**os.environ})
 
                 # Collect results for L1
-                l1_results_path = f"multiblimp/multiblimp_results_10000/{lang}_{vocab_size}-{c_str}/hf_cache_{lang_data_id}_data.tsv"
+                l1_results_path = f"multiblimp/multiblimp_results_epoch/{lang}_{vocab_size}-{c_str}/hf_cache_{lang_data_id}_data.tsv"
                 df = pd.read_csv(l1_results_path, sep='\t')
                 total_samples = len(df)
                 correct_predictions = len(df[df['delta'] > 0])
@@ -76,9 +81,8 @@ for m in all_bgts:
                     'acc': [l1_accuracy],
 
                 })
-                new_line.to_csv('multiblimp/multiblimp_results_ctc.csv', mode='a', header=False, index=False)
+                new_line.to_csv('multiblimp/multiblimp_results_epoch.csv', mode='a', header=False, index=False)
                 print(new_line)
-                
             except ValueError as e:
                 print(f"Error processing model {m_str} at checkpoint {c_str}:")
                 print(f"Command failed with exit code {e.returncode}")
